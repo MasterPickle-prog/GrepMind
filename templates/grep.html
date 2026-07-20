@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='grepstyle.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <title>GrepMind</title>
+  </head>
+  <body>
+      <div class="app-container">
+    <div class="sidebar" id="sidebarEl">
+  <br>
+  <p class="option" id="newChatBtn">
+    <img class="option-icon" src="{{ url_for('static', filename='img/grepmind-icon-64.png') }}" alt="">
+    <span class="option-text">New chat</span>
+  </p>
+  <p class="option" id="searchChatsBtn">
+    <svg class="option-icon" viewBox="0 0 24 24" fill="none">
+      <circle cx="10" cy="10" r="6.5" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M19 19l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    <span class="option-text">Search chats</span>
+  </p>
+
+  <div class="custom-dropdown">
+  <p class="dropdown-btn option" tabindex="0" role="button" aria-expanded="false">
+    <svg class="option-icon chat-bubble-icon" viewBox="0 0 24 24" fill="none">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+    </svg>
+    <span class="option-text">Recent Chats</span>
+    <span class="arrow-icon">&#9656;</span>
+  </p>
+  <div class="dropdown-menu" id="recentChatsList">
+  </div>
+</div>
+
+<a href="{{ url_for('logout') }}" class="option sign-out-btn" id="signOutBtn">
+  <svg class="option-icon" viewBox="0 0 24 24" fill="none">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M16 17l5-5-5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <span class="option-text">Sign out</span>
+</a>
+</div>
+
+<div class="modal-overlay" id="searchModalOverlay">
+  <div class="search-modal">
+    <input type="text" id="searchInput" class="search-input" placeholder="Search chats...">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+    <div class="main-content new-chat">
+      <h2 class="page-title">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+        <img class="page-title-icon" src="{{ url_for('static', filename='img/grepmind-icon-64.png') }}" alt="GrepMind">
+        GrepMind
+      </h2>
+<div class="chat-container" id="chatContainer">
+    <div class="chat-history" id="chatHistory">
+    </div>
+    <div class="composer-area" id="composerArea">
+        <div class="welcome-greeting" id="welcomeGreeting">
+            <img class="welcome-greeting-icon" src="{{ url_for('static', filename='img/grepmind-icon-128.png') }}" alt="">
+            <span id="welcomeGreetingText"></span>
+        </div>
+        <div class="attachments-preview" id="attachmentsPreview"></div>
+        <div class="textarea-row">
+            <button class="plus-btn" id="plusBtn" aria-label="Add attachment" aria-expanded="false">
+                <svg viewBox="0 0 24 24">
+                    <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <div class="upload-menu" id="uploadMenu">
+                <button class="upload-option" id="uploadFilesBtn" type="button">Upload files</button>
+            </div>
+            <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/bmp" multiple hidden>
+            <textarea class="prompt-bar" id="promptInput" rows="1" placeholder="Ask Anything..."></textarea>
+            <button class="send-btn" id="sendBtn" disabled>
+                <svg class="send-arrow" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+    </div>
+  </div>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    </div>
+    <script>
+        const USER_FIRST_NAME = "{{ first_name|e }}";
+    </script>
+    <script src="{{ url_for('static', filename='grepscript.js') }}"></script>
+  </body>
+</html>

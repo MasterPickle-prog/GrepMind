@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='authstyle.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    {% if recaptcha_site_key %}
+    <script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}"></script>
+    {% endif %}
+    <title>Sign Up - GrepMind</title>
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <img class="auth-logo" src="{{ url_for('static', filename='img/grepmind-icon-128.png') }}" alt="GrepMind">
+            <h1 class="auth-title">Create your GrepMind account</h1>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="auth-flash">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form class="auth-form" id="signupForm" method="POST" action="{{ url_for('signup') }}">
+                <input type="hidden" name="recaptcha_token" id="signupRecaptchaToken">
+                <div class="auth-row">
+                    <div class="auth-field">
+                        <label for="first_name">First Name:</label><br>
+                        <textarea id="first_name" name="first_name" rows="1" autocomplete="given-name" required></textarea>
+                    </div>
+                    <div class="auth-field">
+                        <label for="last_name">Last Name:</label><br>
+                        <textarea id="last_name" name="last_name" rows="1" autocomplete="family-name" required></textarea>
+                    </div>
+                </div>
+                <div class="auth-field">
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="password" name="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="confirm_password">Re-enter Password:</label><br>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+                <button type="submit" class="auth-submit">Sign Up</button>
+                <p class="auth-privacy">This site is protected by reCAPTCHA</p>
+            </form>
+
+            <p class="auth-switch">Already have an account? <a href="{{ url_for('signin') }}">Sign In</a></p>
+        </div>
+    </div>
+    <script>
+        const SITE_KEY = '{{ recaptcha_site_key }}';
+
+        document.querySelectorAll('#first_name, #last_name').forEach(el => {
+            el.addEventListener('keydown', e => { if (e.key === 'Enter') e.preventDefault(); });
+        });
+
+        // Generate token on load and refresh every 110s (tokens expire at 120s).
+        // The form submits naturally — no JS interception needed.
+        function refreshToken() {
+            if (!SITE_KEY || typeof grecaptcha === 'undefined') return;
+            grecaptcha.ready(function() {
+                grecaptcha.execute(SITE_KEY, { action: 'signup' }).then(function(token) {
+                    document.getElementById('signupRecaptchaToken').value = token;
+                });
+            });
+        }
+
+        if (SITE_KEY) {
+            // Wait for reCAPTCHA script to load then generate immediately
+            if (typeof grecaptcha !== 'undefined') {
+                refreshToken();
+            } else {
+                window.addEventListener('load', refreshToken);
+            }
+            setInterval(refreshToken, 110_000);
+        }
+    </script>
+</body>
+</html>

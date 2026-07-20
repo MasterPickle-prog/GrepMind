@@ -1,0 +1,49 @@
+# Model weights & checkpoints
+*.pt
+*.pth
+*.bin
+*.safetensors
+checkpoints/
+weights/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Training data (large, not for version control)
+models/
+models/greps/data/
+
+# Training logs & profiler output
+logs/
+runs/
+wandb/
+*.log
+*.pt.trace.json
+profiler/
+
+# User database (contains hashed passwords)
+users.json
+blocked_ips.json
+security_log.json
+*.json
+
+# Secrets
+.env
+.env.local
+
+# Python virtual environments
+env/
+venv/
+.venv/
+ENV/
+
+# IDEs & system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.ipynb_checkpoints/
